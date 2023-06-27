@@ -1,0 +1,63 @@
+<?php
+
+                    $name = $email = $adresse = $phone = "" ;
+                    $errMessage = "" ;
+                    $successMessage = "";
+
+                    if( $_SERVER["REQUEST_METHOD"] == "POST" ){
+                        $name = $_POST["name"]	;
+                        $email = $_POST["email"];
+                        $adresse = $_POST["adresse"] ;
+                        $phone = $_POST["phone"];
+
+                        do {
+                            if(empty($name) || empty($adresse) || empty($phone) || empty($adresse) ){
+                                $errMessage = "toutes les champs sont obligatoire .";
+                                break;
+                            }
+
+                            $sql = "INSERT INTO clientsshop (name, adresse,email,phone)".
+                                " VALUES ('$name', '$adresse', '$email', '$phone')";
+                            $result = $connection->query($sql);
+
+                            if(!$result){
+                                $errMessage = "invalid query : " . $connection->error ;
+                                break ;
+                            }
+
+                            $name = $email = $adresse = $phone = "" ;
+
+                            $successMessage = "Client added successfully ...";
+
+                            header("location:/MYSHOP/index.php");
+                            exit;
+                        }while(false);
+
+
+
+                    }
+?>
+
+
+if(!empty($errMessage) && empty($successMessage)){
+                echo "<div class = 'alert alert-warning-dismissible fade show' role = 'alert'>
+                    <strong>$errMessage</strong>
+                    <button type = 'button' class = 'btn-close' data-bs-dismiss='alert' aria-label='close'></button>
+                </div> 
+                " ;
+            }
+
+
+
+
+  if(!empty($successMessage) && empty($errorMessage)){
+                    echo "<div class = 'row mb-3'>
+                        <div class = 'ofsset-sm-3 col-sm-6'>
+                            <div class = 'alert alert-success alert-dismissible fade show' role = 'alert'>
+                                <strong>$successMessage</strong>
+                                <button type = 'button' class='btn-close' data-bs-dismiss = 'alert' aria-label></button>
+                            </div>
+                        </div>
+                    </div>
+                    ";
+                }
